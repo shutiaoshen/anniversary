@@ -150,11 +150,11 @@ button{font-family:inherit}
 .lyr-toggle:hover{transform:scale(1.08)}
 .lyr-toggle.off{opacity:.45;filter:grayscale(.5)}
 .lyr-title{font-size:10px;color:#d3a38e;margin-bottom:2px;letter-spacing:1px;text-align:right}
-.lyr-window{height:120px;overflow:hidden;position:relative;width:100%}
+.lyr-window{height:144px;overflow:hidden;position:relative;width:100%}
 .lyr-list{transition:transform .6s cubic-bezier(.22,.61,.36,1);will-change:transform}
-.lyr-line{height:30px;line-height:30px;font-size:11.5px;color:#c9a79a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;opacity:.5;filter:blur(3px);transition:font-size .45s ease,opacity .45s ease,filter .45s ease,color .45s ease}
-.lyr-line.near{opacity:.8;filter:blur(1.2px);font-size:12.5px;color:#b98a76}
-.lyr-line.cur{font-size:15px;font-weight:800;color:var(--pink-deep);opacity:1;filter:blur(0)}
+.lyr-line{height:36px;line-height:36px;font-size:13.5px;color:#c9a79a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;opacity:.5;filter:blur(3px);transition:font-size .45s ease,opacity .45s ease,filter .45s ease,color .45s ease}
+.lyr-line.near{opacity:.8;filter:blur(1.2px);font-size:15px;color:#b98a76}
+.lyr-line.cur{font-size:18px;font-weight:800;color:var(--pink-deep);opacity:1;filter:blur(0)}
 
 /* ===== 小屏幕 ===== */
 @media (max-width:640px){
@@ -166,6 +166,14 @@ button{font-family:inherit}
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* ===== 摩天轮 ===== */
+.ferris{display:block;line-height:0;pointer-events:none}
+.ferris svg{width:100%;height:auto;display:block}
+.cover-wheel{width:clamp(84px,16vw,118px);margin:0 auto}
+.deco-ferris{position:absolute;opacity:.5;pointer-events:none;z-index:0}
+.df-1{top:8%;left:5%;width:clamp(56px,9vw,86px)}
+.df-2{top:12%;right:6%;width:clamp(52px,8vw,78px)}
 </style>
 </head>
 <body>
@@ -181,6 +189,7 @@ button{font-family:inherit}
   </div>
   <h1>我们的 365 天</h1>
   <p class="sub">从 2025.09.05 开始的故事<br>有轻松熊的慵懒、海豹的软乎乎、自嘲熊的小尴尬<br>还有 Pingu 陪我们一起见证</p>
+  <div class="ferris cover-wheel" data-ferris></div>
   <button id="startBtn" class="start-btn">🎡 开启我们的故事</button>
   <p class="tiny">点一下，音乐就会响起 ♪ 建议戴上耳机</p>
 </div>
@@ -207,6 +216,7 @@ button{font-family:inherit}
 </div>
 <!-- ============ 第一部分：我们的 365 天 ============ -->
 <section id="s1" class="part part-1">
+  <div class="ferris deco-ferris df-1" data-ferris></div>
   <h2 class="sec-title">📅 我们的 365 天</h2>
   <p class="sec-sub">时间滴答滴答地走，每一天都在偷偷积攒成我们的故事。</p>
   <div class="s1-main">
@@ -324,15 +334,16 @@ button{font-family:inherit}
 </section>
 <!-- ============ 第三部分：祝福 ============ -->
 <section id="s3" class="part part-3">
+  <div class="ferris deco-ferris df-2" data-ferris></div>
   <h2 class="sec-title">💌 祝福</h2>
   <p class="sec-sub">有一些话，想借着这个特别的日子，好好说给你听。点一下下面的爱心吧。</p>
   <div class="letter-stage">
     <div class="letter-card" id="letterCard" contenteditable="true" spellcheck="false">
-      <div class="hello">亲爱的：</div>
+      <div class="hello">亲爱的小徐宝宝：</div>
       <p>一转眼，我们已经一起走过了 365 天。</p>
       <p>这一年里，有笑到肚子疼的瞬间，也有安静靠在一起的黄昏。谢谢你把平凡的日子，过成我喜欢的样子。</p>
       <p>往后的每一个 365 天，我也想和你一起：慢慢看日出，慢慢变老。</p>
-      <div class="sign">—— 爱你的我 ❤️</div>
+      <div class="sign">—— 爱你的小杰 ❤️</div>
           </div>
     <button class="open-letter-btn" id="openLetterBtn">💌 点我拆开一周年祝福</button>
   </div>
@@ -453,6 +464,34 @@ function injectMascots(root){
 }
 window.__mascotFallback = function(img, key){ if(img && img.parentNode && MASCOTS[key]){ img.parentNode.innerHTML = MASCOTS[key](); } };
 injectMascots();
+
+
+/* ============ 摩天轮装饰 ============ */
+var FERRIS_SVG = '<svg viewBox="0 0 240 230" xmlns="http://www.w3.org/2000/svg">' +
+  '<path d="M120 104 L78 214 M120 104 L162 214" stroke="#e7b49b" stroke-width="7" stroke-linecap="round" fill="none"/>' +
+  '<path d="M78 214 L162 214" stroke="#e7b49b" stroke-width="7" stroke-linecap="round"/>' +
+  '<rect x="112" y="216" width="16" height="11" rx="3" fill="#e7b49b"/>' +
+  '<g>' +
+  '<animateTransform attributeName="transform" type="rotate" from="0 120 104" to="360 120 104" dur="16s" repeatCount="indefinite"/>' +
+  '<circle cx="120" cy="104" r="72" fill="none" stroke="#ffc2cf" stroke-width="6"/>' +
+  '<circle cx="120" cy="104" r="72" fill="none" stroke="#ffffff" stroke-width="2.5" opacity=".8"/>' +
+  '<g stroke="#f6b9c6" stroke-width="4" stroke-linecap="round">' +
+  '<line x1="120" y1="104" x2="192" y2="104"/><line x1="120" y1="104" x2="171" y2="155"/><line x1="120" y1="104" x2="120" y2="176"/><line x1="120" y1="104" x2="69" y2="155"/><line x1="120" y1="104" x2="48" y2="104"/><line x1="120" y1="104" x2="69" y2="53"/><line x1="120" y1="104" x2="120" y2="32"/><line x1="120" y1="104" x2="171" y2="53"/>' +
+  '</g>' +
+  '<g transform="translate(192,104)"><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="16s" repeatCount="indefinite" additive="sum"/><line x1="0" y1="3" x2="0" y2="11" stroke="#ff9d76" stroke-width="2.5" stroke-linecap="round"/><rect x="-11" y="11" width="22" height="17" rx="8.5" fill="#fff" stroke="#ffb3c1" stroke-width="2.5"/><circle cx="0" cy="18" r="5" fill="#ffe1e8"/></g>' +
+  '<g transform="translate(171,155)"><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="16s" repeatCount="indefinite" additive="sum"/><line x1="0" y1="3" x2="0" y2="11" stroke="#ff9d76" stroke-width="2.5" stroke-linecap="round"/><rect x="-11" y="11" width="22" height="17" rx="8.5" fill="#fff" stroke="#ffb3c1" stroke-width="2.5"/><circle cx="0" cy="18" r="5" fill="#ffe1e8"/></g>' +
+  '<g transform="translate(120,176)"><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="16s" repeatCount="indefinite" additive="sum"/><line x1="0" y1="3" x2="0" y2="11" stroke="#ff9d76" stroke-width="2.5" stroke-linecap="round"/><rect x="-11" y="11" width="22" height="17" rx="8.5" fill="#fff" stroke="#ffb3c1" stroke-width="2.5"/><circle cx="0" cy="18" r="5" fill="#ffe1e8"/></g>' +
+  '<g transform="translate(69,155)"><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="16s" repeatCount="indefinite" additive="sum"/><line x1="0" y1="3" x2="0" y2="11" stroke="#ff9d76" stroke-width="2.5" stroke-linecap="round"/><rect x="-11" y="11" width="22" height="17" rx="8.5" fill="#fff" stroke="#ffb3c1" stroke-width="2.5"/><circle cx="0" cy="18" r="5" fill="#ffe1e8"/></g>' +
+  '<g transform="translate(48,104)"><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="16s" repeatCount="indefinite" additive="sum"/><line x1="0" y1="3" x2="0" y2="11" stroke="#ff9d76" stroke-width="2.5" stroke-linecap="round"/><rect x="-11" y="11" width="22" height="17" rx="8.5" fill="#fff" stroke="#ffb3c1" stroke-width="2.5"/><circle cx="0" cy="18" r="5" fill="#ffe1e8"/></g>' +
+  '<g transform="translate(69,53)"><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="16s" repeatCount="indefinite" additive="sum"/><line x1="0" y1="3" x2="0" y2="11" stroke="#ff9d76" stroke-width="2.5" stroke-linecap="round"/><rect x="-11" y="11" width="22" height="17" rx="8.5" fill="#fff" stroke="#ffb3c1" stroke-width="2.5"/><circle cx="0" cy="18" r="5" fill="#ffe1e8"/></g>' +
+  '<g transform="translate(120,32)"><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="16s" repeatCount="indefinite" additive="sum"/><line x1="0" y1="3" x2="0" y2="11" stroke="#ff9d76" stroke-width="2.5" stroke-linecap="round"/><rect x="-11" y="11" width="22" height="17" rx="8.5" fill="#fff" stroke="#ffb3c1" stroke-width="2.5"/><circle cx="0" cy="18" r="5" fill="#ffe1e8"/></g>' +
+  '<g transform="translate(171,53)"><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="16s" repeatCount="indefinite" additive="sum"/><line x1="0" y1="3" x2="0" y2="11" stroke="#ff9d76" stroke-width="2.5" stroke-linecap="round"/><rect x="-11" y="11" width="22" height="17" rx="8.5" fill="#fff" stroke="#ffb3c1" stroke-width="2.5"/><circle cx="0" cy="18" r="5" fill="#ffe1e8"/></g>' +
+  '</g>' +
+  '<circle cx="120" cy="104" r="7" fill="#ff8fab" stroke="#fff" stroke-width="2.5"/>' +
+  '</svg>';
+document.querySelectorAll('[data-ferris]').forEach(function(el){
+  el.innerHTML = FERRIS_SVG;
+});
 
 /* ============ 日期计算 ============ */
 var DAY_MS = 86400000;
@@ -654,8 +693,8 @@ var LYRICS = [
 var lyrBox = document.getElementById('lyrics');
 var lyrList = document.getElementById('lyrList');
 var lyrToggle = document.getElementById('lyrToggle');
-var LINE_H = 30;
-var WINDOW_H = 120;
+var LINE_H = 36;
+var WINDOW_H = 144;
 var lyricsOn = true;
 var lyrLines = [];
 LYRICS.forEach(function(l){
@@ -723,6 +762,13 @@ var spy = new IntersectionObserver(function(entries){
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
