@@ -174,6 +174,11 @@ button{font-family:inherit}
 .deco-ferris{position:absolute;opacity:.5;pointer-events:none;z-index:0}
 .df-1{top:8%;left:5%;width:clamp(56px,9vw,86px)}
 .df-2{top:12%;right:6%;width:clamp(52px,8vw,78px)}
+
+/* ===== 标题小日历（9月5日） ===== */
+.cal-badge{display:inline-block;width:54px;border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 3px 12px rgba(255,120,140,.35);text-align:center;vertical-align:middle;margin:0 10px 4px 0}
+.cal-badge .cal-top{display:block;background:linear-gradient(120deg,#ff8fab,#ff9d76);color:#fff;font-size:13px;font-weight:800;letter-spacing:2px;padding:3px 0}
+.cal-badge .cal-day{display:block;font-size:24px;font-weight:900;color:var(--pink-deep);padding:1px 0 3px;line-height:1.2}
 </style>
 </head>
 <body>
@@ -217,7 +222,7 @@ button{font-family:inherit}
 <!-- ============ 第一部分：我们的 365 天 ============ -->
 <section id="s1" class="part part-1">
   <div class="ferris deco-ferris df-1" data-ferris></div>
-  <h2 class="sec-title">📅 我们的 365 天</h2>
+  <h2 class="sec-title"><span class="cal-badge"><span class="cal-top">9月</span><span class="cal-day">5</span></span>我们的 365 天</h2>
   <p class="sec-sub">时间滴答滴答地走，每一天都在偷偷积攒成我们的故事。</p>
   <div class="s1-main">
     <div class="counter">
@@ -762,6 +767,7 @@ var spy = new IntersectionObserver(function(entries){
 </script>
 </body>
 </html>
+
 
 
 
